@@ -1,0 +1,18 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecs-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecs-worker
+  template:
+    metadata:
+      labels:
+        app: ecs-worker
+    spec:
+      containers:
+        - name: worker
+          image: your-repo/ecs-worker:latest
