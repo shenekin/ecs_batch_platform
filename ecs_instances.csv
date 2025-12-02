@@ -1,0 +1,2 @@
+instance_name,instance_type,region,image_id,subnet_id,security_group_ids,key_name,tags,login_name,login_password
+web-server-02,t3.medium,cn-north-1,ami-0c55b159cbfafe1f0,subnet-0123456789abcdef0,sg-0123456789abcdef0,my-ssh-key,env:prod,role:web,SecurePass456!
