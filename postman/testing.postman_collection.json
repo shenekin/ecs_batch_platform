@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "3f392bdf-4931-45ce-a604-13383b8d6a38",
+		"name": "testing",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50505736",
+		"_collection_link": "https://ekin88624-7988580.postman.co/workspace/ekin's-Workspace~34143ee4-e417-49e9-856c-afb285825b8e/collection/50505736-3f392bdf-4931-45ce-a604-13383b8d6a38?action=share&source=collection_link&creator=50505736"
+	},
+	"item": [
+		{
+			"name": "with_file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Visualization Script",
+							"// Visualization Script",
+							"const template = `",
+							"<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\">",
+							"  <thead>",
+							"    <tr>",
+							"      {{#each tableHeaders}}",
+							"        <th>{{this}}</th>",
+							"      {{/each}}",
+							"    </tr>",
+							"  </thead>",
+							"  <tbody>",
+							"    {{#each tableRows}}",
+							"      <tr>",
+							"        {{#each this}}",
+							"          <td>{{this}}</td>",
+							"        {{/each}}",
+							"      </tr>",
+							"    {{/each}}",
+							"  </tbody>",
+							"</table>",
+							"`;",
+							"",
+							"function createPayload() {",
+							"    let data;",
+							"    try {",
+							"        data = pm.response.json();",
+							"    } catch (e) {",
+							"        return { tableHeaders: [\"Error\"], tableRows: [[\"Response is not valid JSON\"]] };",
+							"    }",
+							"    // If response is an array, show as table",
+							"    if (Array.isArray(data)) {",
+							"        if (data.length === 0) {",
+							"            return { tableHeaders: [\"No Data\"], tableRows: [] };",
+							"        }",
+							"        const headers = Object.keys(data[0]);",
+							"        const rows = data.map(item => headers.map(h => JSON.stringify(item[h])));",
+							"        return { tableHeaders: headers, tableRows: rows };",
+							"    }",
+							"    // If response is an object with array properties, show first array found",
+							"    if (typeof data === 'object' && data !== null) {",
+							"        for (const key in data) {",
+							"            if (Array.isArray(data[key]) && data[key].length > 0 && typeof data[key][0] === 'object') {",
+							"                const headers = Object.keys(data[key][0]);",
+							"                const rows = data[key].map(item => headers.map(h => JSON.stringify(item[h])));",
+							"                return { tableHeaders: headers, tableRows: rows };",
+							"            }",
+							"        }",
+							"        // Otherwise, show key-value pairs",
+							"        const headers = [\"Key\", \"Value\"];",
+							"        const rows = Object.entries(data).map(([k, v]) => [k, JSON.stringify(v)]);",
+							"        return { tableHeaders: headers, tableRows: rows };",
+							"    }",
+							"    return { tableHeaders: [\"Value\"], tableRows: [[JSON.stringify(data)]] };",
+							"}",
+							"",
+							"pm.visualizer.set(template, createPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "dry_run",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "batch_id",
+							"value": "my-json-batch-001",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/ekin/Downloads/ecs_instances.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/jobs/ecs_creation/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobs",
+						"ecs_creation",
+						"file"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "with_json",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dry_run\": true,\n    \"instances\": [\n        {\n            \"instance_name\": \"web-server-01\",\n            \"instance_type\": \"t3.medium\",\n            \"region\": \"cn-north-1\",\n            \"image_id\": \"ami-0c55b159cbfafe1f0\",\n            \"subnet_id\": \"subnet-0123456789abcdef0\",\n            \"security_group_ids\": [\"sg-0123456789abcdef0\"],\n            \"key_name\": \"my-ssh-key\",\n            \"tags\": {\"env\": \"prod-abc\", \"role\": \"abc\"},\n            \"login_password\": \"SecurePass123!\"\n        }\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/jobs/ecs_creation/json",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobs",
+						"ecs_creation",
+						"json"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
