@@ -18,7 +18,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{API_PREFIX}/token")
 # API Key Setup
 api_key_header = APIKeyHeader(
     name=API_KEY_HEADER,
-    auto_error=True
+    auto_error=False
 )
 
 def verify_jwt_token(token: str = Depends(oauth2_scheme)) -> dict:
