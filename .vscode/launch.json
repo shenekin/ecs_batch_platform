@@ -2,23 +2,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python (pyenv): FastAPI",
+            "name": "FastAPI (pyenv + Uvicorn)",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",  // Run uvicorn as a module
+            "module": "uvicorn",  // Run Uvicorn as a Python module (avoids path issues)
             "args": [
-                "app.main:app",  // Your FastAPI app path (module:app_instance)
-                "--reload",      // Auto-reload on code changes (debug-friendly)
+                "app.main:app",  // Critical: <module>:<FastAPI instance> (match your code!)
                 "--host", "0.0.0.0",
-                "--port", "8000"
+                "--port", "8000",
+                "--reload",  // Auto-reload on code changes (debug-friendly)
+                "--reload-dir", "${workspaceFolder}/app"  // Limit reloads to your app folder (faster)
             ],
             "console": "integratedTerminal",
-            "python": "/home/ekin/.pyenv/shims/python3",
+            "python": "/home/ekin/.pyenv/shims/python3",  // Your pyenv shim path
             "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}"
+                "PYTHONPATH": "${workspaceFolder}"  // Fixes import issues for nested modules
             },
-            "justMyCode": true
+            "justMyCode": false,  // Set to false if you need to debug Uvicorn/FastAPI internals (optional)
+            "subProcess": true  // Critical: Debug child processes (required for --reload mode)
         }
     ]
 }
