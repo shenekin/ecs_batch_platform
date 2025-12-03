@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python (pyenv): FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",  // Run uvicorn as a module
+            "args": [
+                "app.main:app",  // Your FastAPI app path (module:app_instance)
+                "--reload",      // Auto-reload on code changes (debug-friendly)
+                "--host", "0.0.0.0",
+                "--port", "8000"
+            ],
+            "console": "integratedTerminal",
+            "python": "/home/ekin/.pyenv/shims/python3",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": true
+        }
+    ]
+}
