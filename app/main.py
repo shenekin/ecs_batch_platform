@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  
-from app.api.v1 import jobs_api, tasks_api, health_api
+from app.api.v1 import jobs_api, tasks_api, health_api, auth_api
 
 app = FastAPI(title="ECS Creation Platform")
 
@@ -18,3 +18,4 @@ app.add_middleware(
 # app.include_router(tasks_api.router, prefix="/api/v1/tasks")
 app.include_router(health_api.router, prefix="/api/v1/heals")  # Health check router
 app.include_router(jobs_api.router, prefix="/api/v1/jobs")
+app.include_router(auth_api.router, prefix="/api/v1")
