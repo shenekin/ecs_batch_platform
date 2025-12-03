@@ -9,10 +9,10 @@ class Settings(BaseSettings):
     APP_DESCRIPTION: str = "API Inbound Layer - Batch Job Creation Entry"
     
     # Security Configuration
-    JWT_SECRET_KEY: str = "de23vvkffffdfd"  # Inject via env in production
+    JWT_SECRET_KEY: str = "eyJzdWIiOiJteS12YWxpZC1hcGkta2V5LTEyMyIsImF1dGhfdHlwZSI6Imp3dCIsImlzc3VlZF9hdCI6IjIwMjQtMDUtMjFUMTI6MzQ6NTYuOTg3NjY1In0"  # Inject via env in production
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    API_KEY_WHITELIST: List[str] = ["api-key-test"]  # Test only; use env in production
+    API_KEY_WHITELIST: List[str] = ["api-key-test","api-testing"]  # Test only; use env in production
     
     # Rate Limiting Configuration
     RATE_LIMIT: str = "1000/minute"  # 100 requests per user per minute
